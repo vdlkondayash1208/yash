@@ -1,0 +1,809 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vadlakonda Yashwanth | Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af',
+                        dark: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-fade-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-dark dark:text-gray-200 transition-colors duration-300">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- DATA ---
+        const personalInfo = {
+            name: "Vadlakonda Yashwanth",
+            role: "Full Stack Developer",
+            phone: "9440584274",
+            email: "vdlkondayash1208@gmail.com",
+            location: "Godukondla, Nalgonda, Telangana, India",
+            github: "https://github.com/vdlkondayash1208",
+            linkedin: "https://www.linkedin.com/in/yashwanth-vadlakonda-a74454384/",
+            instagram: "https://www.instagram.com/yashwanth_yadav_1208/"
+        };
+
+        const skillsData = [
+            { name: "HTML5", level: 95 },
+            { name: "CSS3", level: 90 },
+            { name: "JavaScript", level: 85 },
+            { name: "React.js", level: 90 },
+            { name: "Responsive Design", level: 95 },
+            { name: "Git & GitHub", level: 80 },
+            { name: "UI/UX Design", level: 75 }
+        ];
+
+        const servicesData = [
+            { title: "Business Websites", icon: "fa-briefcase", desc: "Professional corporate sites designed to elevate your brand identity." },
+            { title: "Educational Websites", icon: "fa-graduation-cap", desc: "Interactive and informative platforms for schools and institutions." },
+            { title: "Healthcare Websites", icon: "fa-heart-pulse", desc: "Secure and accessible medical portals for clinics and hospitals." },
+            { title: "Event Websites", icon: "fa-calendar-star", desc: "Engaging landing pages and booking systems for events." },
+            { title: "Portfolio Websites", icon: "fa-user-astronaut", desc: "Personal showcases to highlight your skills and achievements." },
+            { title: "React Frontend", icon: "fa-react", desc: "Building high-performance single-page applications with React." }
+        ];
+
+        const projectsData = [
+            {
+                id: 1,
+                title: "Vasavi Dental Care",
+                category: "Healthcare",
+                url: "https://vasavidentalcare.netlify.app/",
+                github: "#",
+                desc: "A modern dental clinic website featuring appointment booking, service details, and doctor profiles with a clean, medical aesthetic.",
+                tech: ["React", "CSS", "Responsive"]
+            },
+            {
+                id: 2,
+                title: "The Bhagyanagar Cafe",
+                category: "Restaurant",
+                url: "https://thebhagyanagarcafe.netlify.app/",
+                github: "#",
+                desc: "An appetizing restaurant showcase with menu displays, gallery, and location map integration for local customers.",
+                tech: ["HTML", "CSS", "JavaScript"]
+            },
+            {
+                id: 3,
+                title: "Sagar Events & Studio",
+                category: "Event",
+                url: "https://sagareventsandstudio.netlify.app/",
+                github: "#",
+                desc: "Dynamic event management portfolio showcasing photography services and event packages with smooth animations.",
+                tech: ["React", "Tailwind", "Animations"]
+            },
+            {
+                id: 4,
+                title: "Karthikeya Educational Institutions",
+                category: "Education",
+                url: "https://karthikeyaeducationalinstitutions.netlify.app/",
+                github: "#",
+                desc: "Comprehensive educational portal featuring admissions, courses, and faculty information for students and parents.",
+                tech: ["HTML5", "CSS3", "JavaScript"]
+            },
+            {
+                id: 5,
+                title: "Road Safety Hackathon Project",
+                category: "Hackathon",
+                url: "https://vdlkondayash1208.github.io/road-safety-hackaton/",
+                github: "https://github.com/vdlkondayash1208/road-safety-hackaton",
+                desc: "An innovative solution developed during a hackathon to promote road safety awareness using interactive web tools.",
+                tech: ["React", "API Integration", "UI/UX"]
+            },
+            {
+                id: 6,
+                title: "ST Laureate School",
+                category: "Education",
+                url: "https://stlaureateschool.netlify.app/",
+                github: "#",
+                desc: "School website designed for clear communication between administration, students, and guardians.",
+                tech: ["HTML", "CSS", "Bootstrap"]
+            },
+            {
+                id: 7,
+                title: "Chaitanya High School",
+                category: "Education",
+                url: "https://chaitanyahighschool.netlify.app/",
+                github: "#",
+                desc: "Academic-focused website featuring news updates, exam schedules, and extracurricular activity highlights.",
+                tech: ["React", "CSS Grid", "Flexbox"]
+            },
+            {
+                id: 8,
+                title: "Highway Racer India",
+                category: "Business",
+                url: "https://higwayracerindia.netlify.app/",
+                github: "#",
+                desc: "Automotive business landing page showcasing vehicle modifications and services with a bold design.",
+                tech: ["HTML", "JavaScript", "CSS Animations"]
+            },
+            {
+                id: 9,
+                title: "Shopping Mall Demo",
+                category: "E-Commerce",
+                url: "https://shoppingmalldemmo.netlify.app/",
+                github: "#",
+                desc: "A functional e-commerce interface demo with product categorization, cart functionality simulation, and checkout UI.",
+                tech: ["React", "State Management", "CSS"]
+            },
+            {
+                id: 10,
+                title: "Sri Sai Computers & Typewritings",
+                category: "Business",
+                url: "https://vdlkondayash1208.github.io/Sri-sai-computers-and-type-writtings/",
+                github: "https://github.com/vdlkondayash1208/Sri-sai-computers-and-type-writtings",
+                desc: "Service-based business website offering computer services and documentation with a professional layout.",
+                tech: ["HTML", "CSS", "Responsive Design"]
+            },
+            {
+                id: 11,
+                title: "Photography Portfolio",
+                category: "Portfolio",
+                url: "https://vdlkondayash1208.github.io/photo/",
+                github: "https://github.com/vdlkondayash1208/photo",
+                desc: "Visually stunning photography gallery focusing on high-quality image presentation and minimal UI.",
+                tech: ["CSS Grid", "Lightbox", "HTML"]
+            },
+            {
+                id: 12,
+                title: "Personal Portfolio",
+                category: "Portfolio",
+                url: "https://vdlkondayash1208.github.io/yashwanth/",
+                github: "https://github.com/vdlkondayash1208/yashwanth",
+                desc: "Personal resume website designed to showcase skills, projects, and contact information effectively.",
+                tech: ["React", "JavaScript", "Tailwind"]
+            },
+            {
+                id: 13,
+                title: "Boutique Fashion Store",
+                category: "E-Commerce",
+                url: "https://vdlkondayash1208.github.io/boutique/",
+                github: "https://github.com/vdlkondayash1208/boutique",
+                desc: "Fashion retail frontend featuring product catalogs, size selection, and a modern shopping experience.",
+                tech: ["HTML", "CSS", "JavaScript"]
+            }
+        ];
+
+        const categories = ["All", "Education", "Healthcare", "Business", "Restaurant", "Portfolio", "E-Commerce", "Event", "Hackathon"];
+
+        // --- COMPONENTS ---
+
+        // 1. Navbar
+        const Navbar = ({ darkMode, setDarkMode }) => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navLinks = [
+                { name: "Home", href: "#home" },
+                { name: "About", href: "#about" },
+                { name: "Services", href: "#services" },
+                { name: "Projects", href: "#projects" },
+                { name: "Skills", href: "#skills" },
+                { name: "Contact", href: "#contact" },
+            ];
+
+            return (
+                <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white dark:bg-darkCard shadow-md py-2' : 'bg-transparent py-4'}`}>
+                    <div className="container mx-auto px-6 flex justify-between items-center">
+                        <a href="#" className="text-2xl font-bold text-primary dark:text-blue-400">
+                            {personalInfo.name.split(' ')[0]}<span className="text-gray-800 dark:text-white">.dev</span>
+                        </a>
+
+                        {/* Desktop Menu */}
+                        <div className="hidden md:flex items-center space-x-8">
+                            {navLinks.map((link) => (
+                                <a key={link.name} href={link.href} className="font-medium hover:text-primary dark:hover:text-blue-400 transition-colors">
+                                    {link.name}
+                                </a>
+                            ))}
+                            <button 
+                                onClick={() => setDarkMode(!darkMode)}
+                                className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400"
+                            >
+                                {darkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}
+                            </button>
+                        </div>
+
+                        {/* Mobile Menu Button */}
+                        <div className="md:hidden flex items-center gap-4">
+                             <button 
+                                onClick={() => setDarkMode(!darkMode)}
+                                className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+                            >
+                                {darkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}
+                            </button>
+                            <button onClick={() => setIsOpen(!isOpen)} className="text-2xl focus:outline-none">
+                                <i className={`fas ${isOpen ? 'fa-times' : 'fa-bars'}`}></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mobile Menu Dropdown */}
+                    {isOpen && (
+                        <div className="md:hidden bg-white dark:bg-darkCard shadow-lg absolute w-full left-0 top-full border-t dark:border-gray-700">
+                            <div className="flex flex-col p-6 space-y-4">
+                                {navLinks.map((link) => (
+                                    <a 
+                                        key={link.name} 
+                                        href={link.href} 
+                                        className="block font-medium hover:text-primary"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {link.name}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </nav>
+            );
+        };
+
+        // 2. Hero Section
+        const Hero = () => {
+            return (
+                <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+                    <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                        <div className="text-center md:text-left animate-fade-up">
+                            <p className="text-primary dark:text-blue-400 font-semibold mb-2">Hello, I am</p>
+                            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900 dark:text-white">
+                                {personalInfo.name}
+                            </h1>
+                            <h2 className="text-2xl md:text-3xl text-gray-600 dark:text-gray-400 mb-6">
+                                Professional <span className="text-primary dark:text-blue-400">Web Developer</span>
+                            </h2>
+                            <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-lg mx-auto md:mx-0">
+                                I build accessible, pixel-perfect, and performant web applications using modern technologies like React.js and Tailwind CSS.
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                <a href="#projects" className="px-8 py-3 bg-primary hover:bg-blue-600 text-white rounded-full font-semibold transition-transform transform hover:-translate-y-1 shadow-lg">
+                                    View Projects
+                                </a>
+                                <a href="#contact" className="px-8 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full font-semibold transition-colors">
+                                    Contact Me
+                                </a>
+                            </div>
+                            <div className="mt-8 flex gap-6 justify-center md:justify-start text-2xl text-gray-600 dark:text-gray-400">
+                                <a href={personalInfo.github} target="_blank" className="hover:text-black dark:hover:text-white transition-colors"><i className="fab fa-github"></i></a>
+                                <a href={personalInfo.linkedin} target="_blank" className="hover:text-blue-700 dark:hover:text-blue-400 transition-colors"><i className="fab fa-linkedin"></i></a>
+                                <a href={personalInfo.instagram} target="_blank" className="hover:text-pink-600 dark:hover:text-pink-500 transition-colors"><i className="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div className="relative animate-float hidden md:block">
+                            <div className="w-80 h-80 bg-gradient-to-tr from-blue-400 to-purple-500 rounded-full mx-auto filter blur-3xl opacity-30 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                            <img 
+                                src="yash.jpeg" 
+                                alt="Profile" 
+                                className="relative z-10 w-80 h-80 object-cover rounded-full mx-auto border-4 border-white dark:border-gray-800 shadow-2xl"
+                            />
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // 3. About Section
+        const About = () => {
+            return (
+                <section id="about" className="py-20 bg-white dark:bg-darkCard">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">About Me</h2>
+                            <div className="w-20 h-1 bg-primary mx-auto rounded"></div>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                            <div className="relative group">
+                                <div className="absolute inset-0 bg-primary rounded-lg transform translate-x-4 translate-y-4 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
+                                <img src="yash.jpeg" alt="Coding" className="relative rounded-lg shadow-xl w-full object-cover" />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-bold mb-4 dark:text-white">Modern Web Developer & Designer</h3>
+                                <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                                    I am Vadlakonda Yashwanth, a passionate web developer based in Telangana, India. I specialize in creating responsive, user-friendly websites that help businesses grow online. My focus is on writing clean, efficient code and delivering seamless user experiences.
+                                </p>
+                                <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                                    Whether it's a small business portfolio or a complex web application, I approach every project with dedication and a keen eye for detail. I stay updated with the latest trends to ensure your website is modern, fast, and secure.
+                                </p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <i className="fas fa-check-circle text-primary"></i>
+                                        <span className="dark:text-gray-200">Responsive Design</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <i className="fas fa-check-circle text-primary"></i>
+                                        <span className="dark:text-gray-200">Clean Code</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <i className="fas fa-check-circle text-primary"></i>
+                                        <span className="dark:text-gray-200">Modern UI</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <i className="fas fa-check-circle text-primary"></i>
+                                        <span className="dark:text-gray-200">Performance</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // 4. Services Section
+        const Services = () => {
+            return (
+                <section id="services" className="py-20 bg-gray-50 dark:bg-dark">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">My Services</h2>
+                            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">I offer a wide range of web development services tailored to meet your specific needs.</p>
+                            <div className="w-20 h-1 bg-primary mx-auto rounded mt-4"></div>
+                        </div>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {servicesData.map((service, index) => (
+                                <div key={index} className="bg-white dark:bg-darkCard p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-b-4 border-transparent hover:border-primary">
+                                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 text-primary dark:text-blue-300 rounded-full flex items-center justify-center text-2xl mb-6">
+                                        <i className={`fas ${service.icon}`}></i>
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-3 dark:text-white">{service.title}</h3>
+                                    <p className="text-gray-600 dark:text-gray-400">{service.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // 5. Projects Section (Most Important)
+        const Projects = () => {
+            const [filter, setFilter] = useState("All");
+            const [visibleProjects, setVisibleProjects] = useState(6); // Pagination/Load More state
+
+            const filteredProjects = projectsData.filter(project => 
+                filter === "All" || project.category === filter
+            );
+
+            const loadMore = () => {
+                setVisibleProjects(prev => prev + 6);
+            };
+
+            return (
+                <section id="projects" className="py-20 bg-white dark:bg-darkCard">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">My Recent Work</h2>
+                            <div className="w-20 h-1 bg-primary mx-auto rounded"></div>
+                        </div>
+
+                        {/* Filter Buttons */}
+                        <div className="flex flex-wrap justify-center gap-4 mb-12">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => { setFilter(cat); setVisibleProjects(6); }}
+                                    className={`px-6 py-2 rounded-full font-medium transition-all ${
+                                        filter === cat 
+                                        ? 'bg-primary text-white shadow-lg transform scale-105' 
+                                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Projects Grid */}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {filteredProjects.slice(0, visibleProjects).map((project) => (
+                                <div key={project.id} className="bg-white dark:bg-dark rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 group">
+                                    <div className="relative overflow-hidden h-48">
+                                        <img 
+                                            src={`https://picsum.photos/seed/${project.title.replace(/\s/g, '')}/600/400`} 
+                                            alt={project.title} 
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                            <a href={project.url} target="_blank" className="p-3 bg-white text-gray-900 rounded-full hover:bg-primary hover:text-white transition-colors">
+                                                <i className="fas fa-external-link-alt"></i>
+                                            </a>
+                                            {project.github && project.github !== "#" && (
+                                                <a href={project.github} target="_blank" className="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-800 hover:text-white transition-colors">
+                                                    <i className="fab fa-github"></i>
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h3 className="text-xl font-bold dark:text-white">{project.title}</h3>
+                                            <span className="text-xs font-semibold px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded">
+                                                {project.category}
+                                            </span>
+                                        </div>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                                            {project.desc}
+                                        </p>
+                                        <div className="flex flex-wrap gap-2 mb-6">
+                                            {project.tech.map((t, i) => (
+                                                <span key={i} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">
+                                                    {t}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-3">
+                                            <a href={project.url} target="_blank" className="flex-1 text-center py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                                                Live Demo
+                                            </a>
+                                            {project.github && project.github !== "#" && (
+                                                <a href={project.github} target="_blank" className="flex-1 text-center py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                                    GitHub
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {visibleProjects < filteredProjects.length && (
+                            <div className="text-center mt-12">
+                                <button onClick={loadMore} className="px-8 py-3 bg-gray-800 dark:bg-blue-600 text-white rounded-full font-semibold hover:bg-gray-700 dark:hover:bg-blue-700 transition-colors">
+                                    Load More Projects
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            );
+        };
+
+        // 6. Skills Section
+        const Skills = () => {
+            return (
+                <section id="skills" className="py-20 bg-gray-50 dark:bg-dark">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">My Skills</h2>
+                            <div className="w-20 h-1 bg-primary mx-auto rounded"></div>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                            {skillsData.map((skill, index) => (
+                                <div key={index}>
+                                    <div className="flex justify-between mb-2">
+                                        <span className="font-medium dark:text-gray-200">{skill.name}</span>
+                                        <span className="text-primary">{skill.level}%</span>
+                                    </div>
+                                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                                        <div 
+                                            className="bg-primary h-3 rounded-full transition-all duration-1000 ease-out" 
+                                            style={{ width: `${skill.level}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // 7. Why Choose Me
+        const WhyChooseMe = () => {
+            const reasons = [
+                { title: "Responsive Design", icon: "fa-mobile-alt", desc: "Websites that look great on all devices." },
+                { title: "Clean Code", icon: "fa-code", desc: "Maintainable and scalable code architecture." },
+                { title: "Modern UI", icon: "fa-paint-brush", desc: "Latest design trends for better engagement." },
+                { title: "Performance Focus", icon: "fa-tachometer-alt", desc: "Optimized loading times and smooth interactions." },
+                { title: "SEO Friendly", icon: "fa-search", desc: "Built to rank well in search engines." },
+                { title: "User-Centered", icon: "fa-users", desc: "Intuitive navigation and accessibility." }
+            ];
+
+            return (
+                <section className="py-20 bg-primary text-white relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-full opacity-10">
+                        <div className="absolute right-0 top-0 w-64 h-64 bg-white rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="absolute left-0 bottom-0 w-96 h-96 bg-white rounded-full transform -translate-x-1/2 translate-y-1/2"></div>
+                    </div>
+                    <div className="container mx-auto px-6 relative z-10">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Me?</h2>
+                            <div className="w-20 h-1 bg-white mx-auto rounded"></div>
+                        </div>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {reasons.map((reason, index) => (
+                                <div key={index} className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl border border-white border-opacity-20 hover:bg-opacity-20 transition-colors">
+                                    <div className="text-3xl mb-4"><i className={`fas ${reason.icon}`}></i></div>
+                                    <h3 className="text-xl font-bold mb-2">{reason.title}</h3>
+                                    <p className="text-blue-100">{reason.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // 8. Contact Section
+        const Contact = () => {
+            const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert("Thank you for your message! I will get back to you soon.");
+                setFormState({ name: '', email: '', subject: '', message: '' });
+            };
+
+            const handleChange = (e) => {
+                setFormState({...formState, [e.target.name]: e.target.value});
+            };
+
+            return (
+                <section id="contact" className="py-20 bg-white dark:bg-darkCard">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">Get In Touch</h2>
+                            <p className="text-gray-600 dark:text-gray-400">Have a project in mind? Let's discuss.</p>
+                            <div className="w-20 h-1 bg-primary mx-auto rounded mt-4"></div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                            {/* Contact Info */}
+                            <div>
+                                <h3 className="text-2xl font-bold mb-6 dark:text-white">Contact Information</h3>
+                                <div className="space-y-6">
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-primary dark:text-blue-300 text-xl flex-shrink-0">
+                                            <i className="fas fa-phone-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold dark:text-gray-200">Phone</h4>
+                                            <a href={`tel:${personalInfo.phone}`} className="text-gray-600 dark:text-gray-400 hover:text-primary">{personalInfo.phone}</a>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-primary dark:text-blue-300 text-xl flex-shrink-0">
+                                            <i className="fas fa-envelope"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold dark:text-gray-200">Email</h4>
+                                            <a href={`mailto:${personalInfo.email}`} className="text-gray-600 dark:text-gray-400 hover:text-primary">{personalInfo.email}</a>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-primary dark:text-blue-300 text-xl flex-shrink-0">
+                                            <i className="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold dark:text-gray-200">Location</h4>
+                                            <p className="text-gray-600 dark:text-gray-400">{personalInfo.location}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-10">
+                                    <h4 className="font-bold mb-4 dark:text-white">Follow Me</h4>
+                                    <div className="flex gap-4">
+                                        <a href={personalInfo.github} target="_blank" className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-primary transition-colors"><i className="fab fa-github"></i></a>
+                                        <a href={personalInfo.linkedin} target="_blank" className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-600 transition-colors"><i className="fab fa-linkedin-in"></i></a>
+                                        <a href={personalInfo.instagram} target="_blank" className="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center hover:bg-pink-500 transition-colors"><i className="fab fa-instagram"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Contact Form */}
+                            <form onSubmit={handleSubmit} className="bg-gray-50 dark:bg-dark p-8 rounded-xl shadow-lg">
+                                <div className="mb-6">
+                                    <label className="block text-sm font-bold mb-2 dark:text-gray-200">Name</label>
+                                    <input type="text" name="name" required onChange={handleChange} value={formState.name} className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors dark:text-white" placeholder="Your Name" />
+                                </div>
+                                <div className="mb-6">
+                                    <label className="block text-sm font-bold mb-2 dark:text-gray-200">Email</label>
+                                    <input type="email" name="email" required onChange={handleChange} value={formState.email} className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors dark:text-white" placeholder="Your Email" />
+                                </div>
+                                <div className="mb-6">
+                                    <label className="block text-sm font-bold mb-2 dark:text-gray-200">Subject</label>
+                                    <input type="text" name="subject" required onChange={handleChange} value={formState.subject} className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors dark:text-white" placeholder="Subject" />
+                                </div>
+                                <div className="mb-6">
+                                    <label className="block text-sm font-bold mb-2 dark:text-gray-200">Message</label>
+                                    <textarea name="message" required onChange={handleChange} value={formState.message} rows="4" className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors dark:text-white" placeholder="Your Message"></textarea>
+                                </div>
+                                <button type="submit" className="w-full py-3 bg-primary hover:bg-blue-600 text-white font-bold rounded-lg transition-colors shadow-lg">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // 9. Footer
+        const Footer = () => {
+            return (
+                <footer className="bg-gray-900 text-white pt-16 pb-8">
+                    <div className="container mx-auto px-6">
+                        <div className="grid md:grid-cols-4 gap-8 mb-12">
+                            <div className="col-span-1 md:col-span-2">
+                                <h2 className="text-2xl font-bold mb-4">{personalInfo.name.split(' ')[0]}.dev</h2>
+                                <p className="text-gray-400 mb-6 max-w-md">
+                                    Building modern web experiences with a focus on performance, accessibility, and clean design. Let's build something amazing together.
+                                </p>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+                                <ul className="space-y-2">
+                                    <li><a href="#home" className="text-gray-400 hover:text-primary transition-colors">Home</a></li>
+                                    <li><a href="#about" className="text-gray-400 hover:text-primary transition-colors">About</a></li>
+                                    <li><a href="#services" className="text-gray-400 hover:text-primary transition-colors">Services</a></li>
+                                    <li><a href="#projects" className="text-gray-400 hover:text-primary transition-colors">Projects</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold mb-4">Connect</h3>
+                                <div className="flex gap-4">
+                                    <a href={personalInfo.github} target="_blank" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors"><i className="fab fa-github"></i></a>
+                                    <a href={personalInfo.linkedin} target="_blank" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors"><i className="fab fa-linkedin-in"></i></a>
+                                    <a href={personalInfo.instagram} target="_blank" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors"><i className="fab fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="border-t border-gray-800 pt-8 text-center">
+                            <p className="text-gray-400 text-sm">
+                                &copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        const BackToTop = () => {
+            const [show, setShow] = useState(false);
+
+            useEffect(() => {
+                const checkScroll = () => setShow(window.scrollY > 300);
+                window.addEventListener('scroll', checkScroll);
+                return () => window.removeEventListener('scroll', checkScroll);
+            }, []);
+
+            const scrollToTop = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            return (
+                <button 
+                    onClick={scrollToTop}
+                    className={`fixed bottom-8 right-8 bg-primary text-white p-4 rounded-full shadow-lg z-40 transition-all duration-300 transform hover:-translate-y-1 ${show ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
+                >
+                    <i className="fas fa-arrow-up"></i>
+                </button>
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            const [darkMode, setDarkMode] = useState(false);
+
+            useEffect(() => {
+                if (darkMode) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }, [darkMode]);
+
+            return (
+                <div className="min-h-screen">
+                    <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+                    <Hero />
+                    <About />
+                    <Services />
+                    <Projects />
+                    <Skills />
+                    <WhyChooseMe />
+                    <Contact />
+                    <Footer />
+                    <BackToTop />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+```
